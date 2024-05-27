@@ -243,14 +243,18 @@ public class VacancyController {
     @GetMapping("/statusOfvacancy/forJob_seeker")
     public boolean getStatusOfVacancyForJobSeeker(@RequestHeader("Authorization") String token, @RequestParam(required = false)
                                                           Long vacancyId) {
-        User user = blockedUserService.getUsernameFromToken(token);
-        JobSeekerVacancyInformation jobSeekerVacancyInformation =
-                jobSeekerVacancyInformationRepository.findByJobSeekerIdAndVacancyId(user.getJobSeeker().getId(), vacancyId);
-        if (jobSeekerVacancyInformation != null) {
-            return true;
-        } else {
-            return false;
+        if (!token.isEmpty()){
+            User user = blockedUserService.getUsernameFromToken(token);
+            JobSeekerVacancyInformation jobSeekerVacancyInformation =
+                    jobSeekerVacancyInformationRepository.findByJobSeekerIdAndVacancyId(user.getJobSeeker().getId(), vacancyId);
+            if (jobSeekerVacancyInformation != null) {
+                return true;
+            } else {
+                return false;
+            }
         }
+        return false;
+
     }
     @GetMapping("/popularCategory")
     public List<VacancyResponseForPopularCategories> getCategoryCounts() {

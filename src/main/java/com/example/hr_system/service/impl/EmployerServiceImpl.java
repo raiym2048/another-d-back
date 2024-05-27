@@ -92,6 +92,7 @@ public class EmployerServiceImpl implements EmployerService {
     @Override
     public List<CandidateResponses> getAllCandidates(Long employerId) {
         User user = userRepository.findById(employerId).orElseThrow(() -> new com.example.hr_system.exception.NotFoundException("not found user",HttpStatus.NOT_FOUND));
+        System.out.println(user.getId() + "jnldmk");
         return candidateToDTOs(jobSeekerRepository.findAll(), user.getEmployer().getId());
     }
     @Override

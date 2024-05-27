@@ -32,7 +32,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers("/ws/**").permitAll()
                         .requestMatchers("/wss/**").permitAll()
-                        .anyRequest().authenticated());
+                        .anyRequest().permitAll());
         return http.build();
     }
     @Bean

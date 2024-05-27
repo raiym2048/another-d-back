@@ -233,6 +233,7 @@ public class JobSeekerServiceImpl implements JobSeekerService {
 
     @Override
     public JobSeekerResponses getById2(Long userId) {
+        System.out.println("userId"+ userId);
         Long id = userRepository.findById(userId).orElseThrow().getJobSeeker().getId();
         return jobSeekerMapper.toDto(jobSeekerRepository.findById(id).orElseThrow(() -> new NotFoundException("not found jobseeker with id: " + id,HttpStatus.NOT_FOUND)));
 
