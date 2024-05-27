@@ -313,10 +313,27 @@ public class VacancyServiceImpl implements VacancyService {
 
     @Override
     public VacancyResponse responded(Long vacancyId, Long userId) {
+        System.out.println("responding qq"+userId);
+        JobSeeker jobSeeker = new JobSeeker();
 
-        Long jobSeekerId = userRepository.findById(userId).get().getJobSeeker().getId();
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent()){
+            if (user.get().getJobSeeker()!=null){
+                jobSeeker = user.get().getJobSeeker();
+            }
+            else {
+                Optional<JobSeeker> jobSeeker1 = jobSeekerRepository.findById(userId);
+                if (jobSeeker1.isPresent())
+                    jobSeeker = jobSeeker1.get();
+            }
+        }
+        else {
+            Optional<JobSeeker> jobSeeker1 = jobSeekerRepository.findById(userId);
+            if (jobSeeker1.isPresent())
+                jobSeeker = jobSeeker1.get();
+        }
+
         Vacancy vacancy = vacancyRepository.findById(vacancyId).orElseThrow(() -> new EntityNotFoundException("Vacancy not found"));
-        JobSeeker jobSeeker = jobSeekerRepository.findById(jobSeekerId).orElseThrow(() -> new EntityNotFoundException("jobSeeker not found: " + jobSeekerId));
 
         List<JobSeeker> jobSeekers = new ArrayList<>();
         if (!vacancy.getJobSeekers().contains(jobSeeker)) {

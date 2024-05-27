@@ -243,15 +243,19 @@ public class VacancyController {
     @GetMapping("/statusOfvacancy/forJob_seeker")
     public boolean getStatusOfVacancyForJobSeeker(@RequestHeader("Authorization") String token, @RequestParam(required = false)
                                                           Long vacancyId) {
+
         if (!token.isEmpty()){
             User user = blockedUserService.getUsernameFromToken(token);
-            JobSeekerVacancyInformation jobSeekerVacancyInformation =
-                    jobSeekerVacancyInformationRepository.findByJobSeekerIdAndVacancyId(user.getJobSeeker().getId(), vacancyId);
-            if (jobSeekerVacancyInformation != null) {
-                return true;
-            } else {
-                return false;
+            if(user.getJobSeeker() != null){
+                JobSeekerVacancyInformation jobSeekerVacancyInformation =
+                        jobSeekerVacancyInformationRepository.findByJobSeekerIdAndVacancyId(user.getJobSeeker().getId(), vacancyId);
+                if (jobSeekerVacancyInformation != null) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
+
         }
         return false;
 

@@ -31,9 +31,7 @@ public class EmployerController {
     @GetMapping("profile/{id}")
     public EmployerResponses getEmployerById(@PathVariable Long id,
                                              @RequestHeader (name="Authorization") String token) {
-        if (blockedUserService.getUsernameFromToken(token).getBlockedUser().getViewingCompanyData()) {
-            throw new BlockedException("THIS USER IS NOT PROHIBITED FROM VIEWING COMPANY DATA");
-        }
+       //
         return employerService.getById(id);
     }
 
